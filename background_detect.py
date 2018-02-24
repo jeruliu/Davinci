@@ -4,6 +4,8 @@ Created on Sat Feb 24 11:15:18 2018
 
 @author: jeru
 """
+import cv2
+
 # calculate the position of surrounding borders with specified space from the edge
 def cal_borders(y, x, n_slice):
     yspan, xspan  = int(y / n_slice), int(x / n_slice)
@@ -18,15 +20,15 @@ def find_recs(top, bottom, left, right, n_rows, n_cols):
     right_roi = gray[0:n_rows, right:n_cols]
     return (top_roi, bottom_roi, left_roi, right_roi)
 
+def assert_rec(rec):
+    (means, stds) = cv2.meanStdDev(rec)
+    return True if (means[0][0] == 255 and stds[0][0] == 0) else False
+    
 def assert_recs(top_roi, bottom_roi, left_roi, right_roi):
-    (means, stds) = cv2.meanStdDev(top_roi)
-    isTopWhite = True if (means[0][0] == 255 and stds[0][0] == 0) else False
-    (means, stds) = cv2.meanStdDev(bottom_roi)
-    isBottomWhite = True if (means[0][0] == 255 and stds[0][0] == 0) else False
-    (means, stds) = cv2.meanStdDev(left_roi)
-    isLeftWhite = True if (means[0][0] == 255 and stds[0][0] == 0) else False
-    (means, stds) = cv2.meanStdDev(right_roi)
-    isRightWhite = True if (means[0][0] == 255 and stds[0][0] == 0) else False
+    isTopWhite = assert_rec(top_roi)
+    isBottomWhite = assert_rec(bottom_roi)
+    isLeftWhite = assert_rec(left_roi)
+    isRightWhite = assert_rec(right_roi)
     return (isTopWhite, isBottomWhite, isLeftWhite, isRightWhite)
 
 image = cv2.imread('D:/dev/bg/1044900258-225256454181249031-225256454181249106-5.jpg')
