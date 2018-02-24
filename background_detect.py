@@ -22,12 +22,21 @@ def cal_borders(y, x, n_slice):
 
 top, bottom, left, right = cal_borders(n_rows, n_cols, 50)
 
+#roi = image[y1:y2, x1:x2]
+left_roi = image[0:n_rows, 0:left]
+right_roi = image[0:n_rows, right:n_cols]
+top_roi = image[0:top, 0:n_cols]
+bottom_roi = image[bottom:n_rows, 0:n_cols]
 
+(means, stds) = cv2.meanStdDev(bottom_roi)
+print(stds)
+print(means)
+cv2.imshow("Output", bottom_roi)
+cv2.waitKey(0)
+
+'''
 cv2.line(image, (0, top), (n_cols, top), (255,0,0), 2)
 cv2.line(image, (0, bottom), (n_cols, bottom), (255,0,0), 2)
 cv2.line(image, (left, 0), (left, n_rows), (255,0,0), 2)
 cv2.line(image, (right, 0), (right, n_rows), (255,0,0), 2)
-
-cv2.imshow("Output", image)
-cv2.waitKey(0)
-
+'''
